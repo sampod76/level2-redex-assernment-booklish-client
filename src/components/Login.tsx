@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from "../redux/hooks";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { loginUser } from "../redux/features/users/userSlice";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 interface ILoginFormData {
   name?: string;
   email: string;
@@ -11,6 +12,8 @@ interface ILoginFormData {
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
+  console.log(user);
   const navigate = useNavigate();
   const {
     register,
@@ -22,9 +25,15 @@ const Login = () => {
     console.log(data);
     const { email, password } = data;
     dispatch(loginUser({ email, password }));
-    navigate("/");
+
     toast("successFully Login");
   };
+
+  useEffect(() => {
+    if (user.email) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-400">

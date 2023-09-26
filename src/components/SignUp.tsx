@@ -14,6 +14,7 @@ interface ISignupFormData {
 const SignUp = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const { error, isError, user } = useAppSelector((state) => state.user);
   console.log(user);
 
@@ -40,6 +41,11 @@ const SignUp = () => {
     navigate("/");
     toast("successFully Sign Up");
   };
+  useEffect(() => {
+    if (user.email) {
+      navigate("/");
+    }
+  }, [user]);
   const passwordInput = document.getElementById("password") as HTMLInputElement;
 
   return (
